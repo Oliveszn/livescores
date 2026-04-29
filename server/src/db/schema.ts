@@ -1,3 +1,4 @@
+import { InferSelectModel } from "drizzle-orm";
 import {
   pgTable,
   serial,
@@ -42,3 +43,4 @@ export const commentary = pgTable("commentary", {
   tags: text("tags").array(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+export type Commentary = InferSelectModel<typeof commentary>;
