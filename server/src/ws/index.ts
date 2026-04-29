@@ -1,5 +1,6 @@
 import { WebSocketServer, WebSocket } from "ws";
 import { Server as HttpServer } from "http";
+import { wsArcjet } from "../arcjet";
 
 type JsonPayload = Record<string, unknown>;
 
@@ -28,7 +29,26 @@ export function attachWebSocketServer(server: HttpServer) {
     maxPayload: 1024 * 1024,
   });
 
-  wss.on("connection", (socket: CustomWebSocket) => {
+  wss.on("connection", async (socket: CustomWebSocket, req) => {
+    if (wsArcjet) {
+      try {
+        const decision = await wsArcjet.protect(req);
+        if (decision.isDenied()) {
+          const code = decision.reason.isRateLimit() ? 1013 : 1008;
+          const reason = decision.reason.isRateLimit()
+            ? "Rate limit exceeded"
+            : "Access denied";
+
+          socket.close(code, reason);
+          return;
+        }
+      } catch (error) {
+        console.error("WS connection error", error);
+        socket.close(1011, "Server security error");
+        return;
+      }
+    }
+
     socket.isAlive = true;
     socket.on("pong", () => {
       socket.isAlive = true;
