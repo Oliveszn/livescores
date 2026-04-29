@@ -1,15 +1,16 @@
 import { MATCH_STATUS } from "../validation/matches";
 
 export function getMatchStatus(
-  startTime: number,
-  endTime: number,
+  startTime: string,
+  endTime: string,
   now = new Date(),
-) {
+): "scheduled" | "live" | "finished" {
   const start = new Date(startTime);
   const end = new Date(endTime);
 
   if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
-    return null;
+    // return null;
+    throw new Error("Invalid match dates");
   }
 
   if (now < start) {
