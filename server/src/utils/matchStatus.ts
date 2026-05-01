@@ -30,7 +30,7 @@ export async function syncMatchStatus(match: any, updateStatus: any) {
     return match.status;
   }
 
-  if (match.status === nextStatus) {
+  if (match.status !== nextStatus) {
     await updateStatus(nextStatus);
     match.status = nextStatus;
   }

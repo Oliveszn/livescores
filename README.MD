@@ -1,6 +1,6 @@
-# Sports Live Data System
+# Sportz Live Data System
 
-A real-time sports data API built with Node.js, Express, and WebSockets. The system provides live match tracking with a publish/subscribe architecture — clients connect over WebSocket and receive pushed updates the moment a match is created or commentary is added, with no polling required.
+A real-time sports data API built with Node.js, Express, and WebSockets. The system provides live match tracking with a publish/subscribe architecture, clients connect over WebSocket and receive pushed updates the moment a match is created or commentary is added, with no polling required.
 
 ---
 
@@ -8,7 +8,7 @@ A real-time sports data API built with Node.js, Express, and WebSockets. The sys
 
 This is a backend service for tracking live sporting events. It exposes a REST API for managing matches and per-match commentary, and a WebSocket server that broadcasts those changes to any connected clients in real time.
 
-The core idea is a **pub/sub model**: when a match is created or a commentary event is posted, the server immediately pushes that update to every client subscribed to that match. A client watching a football game receives goal notifications, substitutions, and match status changes the instant they happen — without refreshing.
+The core idea is a **pub/sub model**: when a match is created or a commentary event is posted, the server immediately pushes that update to every client subscribed to that match. A client watching a football game receives goal notifications, substitutions, and match status changes the instant they happen, without refreshing.
 
 ---
 
@@ -33,7 +33,7 @@ HTTP Client                WebSocket Client
   PostgreSQL
 ```
 
-The REST API and WebSocket server share a single HTTP server instance. When a controller handles a POST request and successfully writes to the database, it calls a broadcast function via `app.locals` — which pushes the new data to all relevant WebSocket subscribers.
+The REST API and WebSocket server share a single HTTP server instance. When a controller handles a POST request and successfully writes to the database, it calls a broadcast function via `app.locals`, which pushes the new data to all relevant WebSocket subscribers.
 
 ---
 
